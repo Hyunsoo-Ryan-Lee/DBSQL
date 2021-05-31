@@ -1,0 +1,106 @@
+학습 내용
+
+1.  DB 사용 방법 학습
+    1. 용도 
+        - data를 저장하여 활용하기 위한 software
+        - 동시간대에도 다수의 기기들에 접속해서 활용 가능하게 하는 software
+        - 제약조건 설정 가능(숫자만/문자만/data길이 등등)
+
+    2. 사용방법 : sql 문장으로 소통
+
+    3. 할 수 있는 내용
+        - 데이터 저장(insert)/수정(update)/삭제(delete)/검색(select,매우 중요)
+        - insert/update/delete/select - CRUD
+
+    4. 용어
+        1. Database[DB] - 데이터
+        2. RDBMS - 관계형 데이터베이스 시스템
+
+2. DB vender社
+    - Oracle : Oracle DB, mysql DB
+    - MS : MSSQL
+    - IBM : DB2
+    - Monty Program AB : MariaDB (비용이 저렴하여 기업들이 선호)
+    - 큐브리드 : 큐브리드 (국내 DB)
+    - 스마트 기기 : sqllite
+    - web browser : 
+    설치시 window의 path라는 항목에 자동으로 등록
+        - sqlplus.exe 실행 가능 (sqlplus ID/PW)
+
+
+    **관리의 중요성
+    - 오라클 DB가 정상적으로 실행중인지 여부 확인
+    window > 서비스 > 상태:실행중 > Oracle 서비스 2개 실행중인지 확인(OracleServiceXE, OracleXETNSListener)
+
+
+
+3. 학습 방식
+    1. Oracle DB 사용
+    2. sql문장 실습 tool
+        - 설치시 sqlplus라는 소통 tool 자동 설치
+        - DOS창에서 실습
+
+4. 현업 작업 방식
+    1. 요구사항 도출 -> data 구조 정리 -> Database Modeling(실 저장 구조로 설계)
+    -> 실제 DB에 사용 가능한 SQL 문장으로 개발(백업, 권장 확장자 *.sql)
+    -> DB에 적용 -> DB의 내용을 사용 가능하게 Application 개발해서 CRUD로 서비스
+
+5. 실습 방식
+    1) Oracle DB 실행 후 접속(DB의 접속 ID 필수) - sqlplus system/manager
+    2) SQL 문장으로 CRUD 작업
+        1단계 : 존재하는 구조(table)로부터 data 검색
+        2단계 : 존재하는 구조(table)에 저장/수정/삭제
+        3단계 : table 생성 및 삭제
+        4단계 : PLSQL(Oracle 자체 개발 언어)
+            - Oracle DB 자체의 함수들 존재
+            - PLSQL에 능하면 오라클 DB에 사용자 정의 함수 개발 가능
+    3) 접속 해제
+
+6. 실습한 SQL 문장
+    1. admin 계정으로 db 접속
+        cmd > sqlplus system/manager
+
+    2. admin이 일반 SCOTT 계정 생성 및 사용가능한 table과 insert 로직 가능한 문장 실행
+        @C:\oraclexe\app\oracle\product\11.2.0\server\rdbms\admin\scott.sql
+
+    3. 실제 실습하게 되는 id/pw > sqlplus SCOTT/TIGER
+
+    4. 실습 table 구조
+        1. emp - 사원 정보
+            사번 empno / 사원명 ename / 직무 job / 상사사번 mgr / 입사일 hiredate / 월급여 sal / 특별상여 comm(영업부 제외)
+
+        2. dept - 부서 정보
+            부서번호/부서명/부서위치
+            deptno/dname/loc
+
+        emp와 dept는 관계지어져있음
+        - dept table의 deptno라는 부서 번호 값을 emp table의 deptno가 참조하고 있음.
+
+7. 필수 암기 용어
+    1. table
+    2. column - 세로, 속성 / row - 가로, 한 객체의 모든 정보
+
+
+
+
+
+1. hr 계정 사용 필수
+2. hr 계정에서 제공하는 table 기반으로 자기주도 문제 5개 제시
+3. 모범답안도 도출 (1-3단계 학습 내용 기준)
+4. GITHUB에 업로드
+
+문제
+1) 입사일(hire_date)이 06년인 employees들 중 연봉(salary)이 5000 이상인 직원들의 이름(first,last)과 연봉정보를 추출하여 오름차순 정렬하세요
+select hire_date,first_name,last_name,salary from employees where substr(hire_date,0,2)='06' and salary>'5000' order by salary asc;
+
+2) 작업 내역(job_history)에서 소요기간이 1400일 이상인 직원들의 employee_id 값을 추출하세요.
+
+select employee_id,round(end_date-start_date) as 소요기간 from job_history where round(end_date-start_date) > '1400';
+
+3) countries table의 대륙 정보(region_id)를 1은 'Europe', 2는 'America', 3은 'Asia', 4는 'Africa_continent'로 바꾼 후 이들을 글자수가 적은 순으로 정렬해서 출력하세요. 
+
+select country_name, decode(region_id,'1','Europe',
+                                      '2','America',
+                                      '3','Asia',
+                                      '4','Africa_continent') as 대륙
+from countries order by length(대륙) asc;

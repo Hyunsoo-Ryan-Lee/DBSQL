@@ -1,0 +1,153 @@
+<html>
+<header>
+<title>초보자도 할 수 있는 SQL</title>
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<style>
+body {font-family: 'Nanum Gothic', sans-serif;}
+h1 {margin : 1rem;}
+details {padding : 1rem; white-space: pre-wrap;}
+.question {margin : 2rem; padding : 1rem; border: 1px solid gray;}
+</style>
+</header>
+
+<body>
+
+<h1>[초보자도 할 수 있는 SQL - 이현수]</h1>
+
+<div class='question' id='Q1'>
+      <h4>1. 입사일(hire_date)이 06년인 employees들 중 연봉(salary)이 5000 이상인 직원들의 이름(first,last)과 연봉정보를 추출하여 오름차순 정렬하세요.
+      </h4>
+      
+      <details>
+            <summary>모범 답안</summary>
+            <strong>select</strong> hire_date,first_name,last_name,salary
+            <strong>from</strong> employees
+            <strong>where</strong> substr(hire_date,0,2)='06' <strong>and</strong> salary>'5000' order by salary <strong>asc</strong><br>
+            HIRE_DAT FIRST_NAME             LAST_NAME           SALARY
+            -------- ------------------------------------------ ------
+            06/11/03 Sarath                       Sewall                7000
+            06/12/09 Nanette                 Cambrault             7500
+            06/03/07 Jose Manuel            Urman                 7800
+            06/03/30 Christopher                Olsen                 8000
+            06/04/23 Jack                          Livingston            8400
+            06/03/24 Jonathon                    Taylor                8600
+            06/01/03 Alexander                Hunold                9000
+            06/01/24 Tayler                          Fox                   9600
+            06/03/23 Harrison                    Bloom                10000
+      </details>
+
+</div>
+
+
+<div class=question id=Q2>
+            <h4>2. 작업 내역(job_history)에서 소요기간이 1400일 이상인 직원들의 employee_id 값을 추출하세요.</h4>
+      <details><summary>모범 답안</summary>
+            <strong>select</strong> employee_id,round(end_date-start_date) as 소요기간
+            <strong>from</strong> job_history
+            <strong>where</strong> round(end_date-start_date) > '1400';<br>
+
+            EMPLOYEE_ID   소요기간
+            -----------------      ----------
+                  102                  2018
+                  101                  1497
+                  201                  1401
+                  200                  2100
+                  200                  1644
+      </details>
+</div>
+
+
+<div class=question id=Q3>
+            <h4>3. countries table의 대륙 정보(region_id)를 1은 'Europe', 2는 'America', 3은 'Asia', 4는 'Africa_continent'로 바꾼 후 이들을 글자수가 적은 순으로 정렬해서 출력하세요.</h4>
+      <details><summary>모범 답안</summary>
+            <strong>select</strong> country_name, <strong>decode</strong>(region_id,'1','Europe',
+                                                                              '2','America',
+                                                                              '3','Asia',
+                                                                              '4','Africa_continent') as 대륙
+            <strong>from</strong> countries
+            <strong>order by</strong> length(대륙) <strong>asc</strong>;<br>
+            COUNTRY_NAME                                                                     대륙
+            -------------------------------------------------------------------------------- --------------------------------
+            Australia                                                                        Asia
+            Singapore                                                                        Asia
+            Malaysia                                                                         Asia
+            Japan                                                                            Asia
+            India                                                                            Asia
+            China                                                                            Asia
+            France                                                                           Europe
+            Belgium                                                                          Europe
+            Denmark                                                                          Europe
+            United Kingdom                                                                   Europe
+            Italy                                                                            Europe
+            Netherlands                                                                      Europe
+            Germany                                                                          Europe
+            Switzerland                                                                      Europe
+            Argentina                                                                        America
+            Mexico                                                                           America
+            United States of America                                                         America
+            Canada                                                                           America
+            Brazil                                                                           America
+            Zimbabwe                                                                         Africa_continent
+            Nigeria                                                                          Africa_continent
+            Zambia                                                                           Africa_continent
+            Israel                                                                           Africa_continent
+            Egypt                                                                            Africa_continent
+            Kuwait                                                                           Africa_continent
+      </details>
+</div>
+
+
+<div class=question id=Q4>
+            <h4>4. 근무년수가 18년이 넘어가는 직원의 풀네임(column 생성할것)을 근무년수가 높은 순으로 출력하라.</h4>
+      <details><summary>모범 답안</summary>
+            <strong>select</strong> first_name, last_name, <strong>round</strong>(round(sysdate-hire_date)/365, 1) as 근무년수
+            <strong>from</strong> employees
+            <strong>where</strong> round(round(sysdate-hire_date)/365, 1) > 18
+            <strong>order by</strong> 근무년수 <strong>desc</strong>;
+
+            SALARY      DEPARTMENT_ID
+            ----------&nbsp;&nbsp;&nbsp;&nbsp;-------------
+            17000            90
+            17000            90
+            14000            80
+            13500            80
+            13000            20
+            12000            80
+            11000            80
+            11000            30
+            10500            80
+            10000            80
+            9500             80
+            9000             80
+            8200             50
+            8000             80
+            8000             50
+            7900             50
+            7500             80
+            7000             80
+            6500             50
+            5800             50
+      </details>
+</div>
+
+
+<div class=question id=Q5>
+            <h4>5. 부서번호가 60인 직원의 이름과 급여가 높은 순서대로 내림차순 정렬하시오.
+            </h4>
+      <details><summary>모범 답안</summary>
+            <strong>select</strong> first_name, last_name, salary
+            <strong>from</strong> employees
+            <strong>where</strong> department_id = 60 order by salary <strong>desc</strong>;
+            
+            FIRST_NAME                         LAST_NAME                                   SALARY
+            ---------------------------------- --------------------------------------- ----------
+            Alexander                              Hunold                                               9000
+            Bruce                                     Ernst                                                   6000
+            David                                     Austin                                                 4800
+            Valli                                       Pataballa                                             4800
+            Diana                                     Lorentz                                               4200
+
+      </details>
+</div>
+</body>
+</html>
