@@ -44,7 +44,7 @@ details {padding : 1rem; white-space: pre-wrap;}
       <details><summary>모범 답안</summary>
             <strong>select</strong> employee_id,round(end_date-start_date) as 소요기간
             <strong>from</strong> job_history
-            <strong>where</strong> round(end_date-start_date) > '1400';<br>
+            <strong>where</strong> round(end_date-start_date) >= '1400';<br>
 
             EMPLOYEE_ID   소요기간
             -----------------      ----------
@@ -105,40 +105,30 @@ details {padding : 1rem; white-space: pre-wrap;}
             <strong>where</strong> round(round(sysdate-hire_date)/365, 1) > 18
             <strong>order by</strong> 근무년수 <strong>desc</strong>;
 
-            SALARY      DEPARTMENT_ID
-            ----------&nbsp;&nbsp;&nbsp;&nbsp;-------------
-            17000            90
-            17000            90
-            14000            80
-            13500            80
-            13000            20
-            12000            80
-            11000            80
-            11000            30
-            10500            80
-            10000            80
-            9500             80
-            9000             80
-            8200             50
-            8000             80
-            8000             50
-            7900             50
-            7500             80
-            7000             80
-            6500             50
-            5800             50
+            FIRST_NAME                       LAST_NAME                                     근무년수
+            -------------------------------- ------------------------------------------- ----------
+            Lex                                         De Haan                                               20.4
+            Nancy                                    Greenberg                                            18.8
+            Daniel                                    Faviet                                                   18.8
+            Den                                       Raphaely                                               18.5
+            Alexander                               Khoo                                                   18.1
+            Payam                                    Kaufling                                               18.1
+            Susan                                     Mavris                                                   19
+            Hermann                                 Baer                                                     19
+            Shelley                                   Higgins                                                  19
+            William                                   Gietz                                                    19
       </details>
 </div>
 
 
 <div class=question id=Q5>
-            <h4>5. 부서번호가 60인 직원의 이름과 급여가 높은 순서대로 내림차순 정렬하시오.
+            <h4>5. 부서번호가 60인 직원의 이름과 급여가 높은 순서대로 정렬하세요.
             </h4>
       <details><summary>모범 답안</summary>
             <strong>select</strong> first_name, last_name, salary
             <strong>from</strong> employees
             <strong>where</strong> department_id = 60 order by salary <strong>desc</strong>;
-            
+
             FIRST_NAME                         LAST_NAME                                   SALARY
             ---------------------------------- --------------------------------------- ----------
             Alexander                              Hunold                                               9000
