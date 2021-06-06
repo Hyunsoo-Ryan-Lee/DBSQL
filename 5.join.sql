@@ -65,6 +65,10 @@ select ename, empno, loc
 from emp, dept
 where ename = 'SMITH';
 
+select ename, empno, loc, dname, emp.deptno
+from emp, dept
+where ename = 'SMITH';
+
 
 -- deptno 는 두개의 table에 다 존재하기 때문에 어떤 table의 값인지 불명확해서 에러~!
 -- ORA-00918: column ambiguously defined
@@ -168,8 +172,28 @@ select ename, sal, grade
 from emp, salgrade
 where sal between losal and hisal;
 
+
+select ename, sal, grade 
+from (select ename, sal, grade from emp, salgrade where sal between losal and hisal)
+where grade between 2 and 4;
+
 -- 1. 81년 4월 1일 이후에 입사한 사원들이 가장 많은 부서의 부서명을 구하세요.
 -- dname 개수를 카운팅해서 max 최대값
+select count(ename), emp.deptno 
+from (select hiredate, dname from emp e, dept d
+	  where hiredate > '81/04/01' and e.deptno=d.deptno);
+
+
+select dname, count(dname) as AA from emp, dept where hiredate > '81/04/01' and emp.deptno = dept.deptno
+group by dname order by AA desc;
+
+select max(AA) as ans from
+(select dname, count(dname) as AA from emp, dept where hiredate > '81/04/01' and emp.deptno = dept.deptno
+group by dname order by AA);
+ 
+
+
+
 select max(count(hiredate)) as ans, dept.deptno, dname
 from emp, dept
 where emp.deptno = dept.deptno;
@@ -188,11 +212,11 @@ where hiredate > '81/04/01' and emp.deptno = dept.deptno;
 
 select *
 from(
-	select dname 
+	select dname, count(ename) as AA
 	from emp, dept 
 	where hiredate > '81/04/01' and emp.deptno = dept.deptno
 	group by dname 
-	order by count(ename) desc)
+	order by AA desc)
 	where ROWNUM=1;
 
 
@@ -204,7 +228,15 @@ from(
 */
 select m.ename 
 from emp e, emp m 
-where e.ename = "SMITH" and e.mgr = m.empno;
+where e.ename = 'SMITH' and e.mgr = m.empno;
+
+select e.ename as 사원이름, m.ename as 매니저이름
+from emp e, emp m 
+where e.ename='SMITH' and e.mgr=m.empno;
+
+select ename from emp
+where empno=(select mgr from emp where ename = 'SMITH');
+
 
 
 -- 12. 메니저 이름이 KING(m ename='KING')인 사원들의 이름(e ename)과 직무(e job) 검색
@@ -216,6 +248,7 @@ where m.ename='KING' and e.mgr = m.empno;
 
 
 -- 13. SMITH와 동일한 근무지(deptno)에서 근무하는 사원의 이름 검색
+
 select e.ename, e.deptno
 from emp e, emp m
 where m.ename = 'SMITH'

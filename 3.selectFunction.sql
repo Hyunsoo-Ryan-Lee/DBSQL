@@ -291,7 +291,7 @@ select ename from emp where hiredate='1980-12-17';
 
 -- [3] to_number() : 문자열을 숫자로 변환
 --1. '20,000'의 데이터에서 '10,000' 산술 연산하기 
-select '20000'-'10000' from dual; -- 오류남
+select '20000'-'10000' from dual; -- 오류남 (문자 - 문자)
 select to_number('20000')-10000 from dual; -- 문자형을 숫자형으로 변환 후 계산
 select to_number('20000','99,999') - to_number('10000','99,999') from dual;
 -- 힌트 - 9 : 실제 데이터의 유효한 자릿수 숫자 의미(자릿수 채우지 않음)
@@ -313,7 +313,7 @@ from dept;
 -- 10번 부서인 경우 A등급, 20번 부서는 B등급, 나머지는 C등급으로 출력
 select deptno, decode(deptno, 10, 'A등급',
                               20, 'B등급',
-                              'C등급') as '등급'
+                              'C등급') as Grade
 from dept;
 
 
@@ -332,7 +332,7 @@ from emp order by inc_salary desc;
 --3. 'MANAGER'인 직군은 '갑', 'ANALYST' 직군은 '을', 나머지는 '병'으로 검색
 select ename, job, decode(job, 'MANAGER', '갑',
                               'ANALYST', '을',
-                              '병')
+                              '병') as AAA
 from emp;
 
 select country_name, decode(region_id,'1','유럽',

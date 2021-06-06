@@ -1,7 +1,8 @@
 --4.selectGroupFunction.sql
 -- 그룹함수란? 다수의 행 데이터를 한번에 처리해서 하나의 결과값을 검색되는 함수
 
--- 장점 : 함수 연산시 null 데이터를 함수 내부적으로 사전에 고려해서 null값 보유한 field는 함수 로직 연산시 제외, sql 문장 작업 용이
+-- 장점 : 함수 연산시 null 데이터를 함수 내부적으로 사전에 고려해서 
+--        null값 보유한 field는 함수 로직 연산시 제외, sql 문장 작업 용이
 /*
 1. count() : 개수 확인 함수
 2. sum() : 합계 함수
@@ -27,7 +28,7 @@
 
 
 --? comm 받는 직원 수만 검색
-select count(comm) from emp;
+select count(comm) as AAA from emp;
 
 --2. sum() : 합계 함수
 -- ? 모든 사원의 월급여(sal)의 합
@@ -137,6 +138,12 @@ group by deptno;
 -- 조건 추가
 --2. ? 부서별 그룹을 지은후(group by deptno), 
 -- 부서별(deptno) 평균 급여(avg())가 2000 이상(>=)부서의 번호와 평균 급여 검색 
+
+
+
+
+
+
 select deptno,count(*),count(comm),avg(sal)
 from emp
 group by deptno
