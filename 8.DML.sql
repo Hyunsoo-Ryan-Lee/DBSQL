@@ -350,6 +350,7 @@ insert all
 	into produce01 values('101', '1001', 1, 500)
 	into produce01 values('102', '1002', 1, 400)
 	into produce01 values('103', '1003', 1, 300)
+	into produce02 values('103', '1003', 1, 300)
 	into produce02 values('201', '1004', 1, 500)
 	into produce02 values('202', '1005', 1, 600)
 	into produce02 values('203', '1006', 1, 700)
@@ -413,3 +414,52 @@ when not matched then
 
 select * from produce_total;
 
+
+
+
+
+
+
+
+drop table sold;
+drop table input;
+drop table warehouse;
+
+create table sold(
+	product_no varchar2(5), 
+	amount number(2)
+);
+create table input(
+	product_no varchar2(5), 
+	amount number(2)
+);
+create table warehouse(
+	product_no varchar2(5), 
+	amount number(2)
+);
+
+insert all
+	into warehouse values('1001', 12)
+	into warehouse values('1002', 3)
+	into warehouse values('1003', 6)
+	into warehouse values('1004', 7)
+	into warehouse values('1005', 15)
+	into warehouse values('1006', 4)
+	into warehouse values('1007', 11)
+	into warehouse values('1008', 3)
+	into warehouse values('1009', 17)
+	into warehouse values('1010', 5)
+
+	into input values('1001',3)
+	into input values('1002',6)
+	into input values('1003',2)
+	into input values('1008',10)
+	
+	into sold values('1003',5)
+	into sold values('1007',4)
+	into sold values('1009',11)
+	into sold values('1010',2)
+select * from dual;
+
+--위의 세 테이블에서 sold가 들어가면 warehouse에서 수량을 빼고
+--input이 들어가면 warehouse에서 수량을 더해서 최종적으로 merge된 테이블 출력

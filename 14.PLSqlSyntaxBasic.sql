@@ -214,7 +214,7 @@ select empno, ename, sal, comm
 	from emp 
 	where ename='SMITH';
 
-select empno, ename, sal, comm, sal+nvl(comm,0) 
+select empno, ename, sal, comm, sal+nvl(comm,0) as total
 	from emp 
 	where ename='SMITH';	
 
@@ -290,10 +290,12 @@ end;
 	end loop;
 */
 -- loop 
-declare
+-- 조건에 부합하는 상황에서만 반복
+-- 조건식은 어떤 영역(위치)에 반영해서 반복 중지
+declare  
 	num number(2) := 0;
 begin
-	loop
+	loop  -- for문과 비슷
 		dbms_output.put_line(num);
 		num := num+1;
 		exit when num > 5;
@@ -301,21 +303,85 @@ begin
 end;
 /
 
+declare 
+	num number(2) := 1;
+begin
+	loop
+		dbms_output.put_line(num);
+		num := num+1;
+		exit when num = 5;
+	end loop;
+end;
+/
+
 -- while
 
+declare
+	num number(2) := 0;
+begin
+	while num < 5 loop 
+	dbms_output.put_line(num);
+	num := num + 1;
+
+	end loop;
+end;
+/
 
 
 -- for 
 -- 오름차순
+declare
 
-
+begin
+	for num in 0..9 loop
+	dbms_output.put_line(num);
+	end loop;
+end;
+/
 
 
 -- 내림차순
-
+begin
+	for num in reverse 0..9 loop
+	dbms_output.put_line(num);
+	end loop;
+end;
+/
 
 
 --11.? emp table 직원들의 사번을 입*력받아서(동적데이터) 해당하는 
 -- 사원의 이름 음절 수 만큼 * 표 찍기 
 -- length()
 
+declare
+	num number(2) := 0;
+	test emp.empno%type := &v; 		
+begin
+	loop
+		dbms_output.put_line('*'*num);
+		num := num+1;
+		exit when length(test) = 5;
+	end loop;
+end;
+/
+
+
+
+declare
+	test emp.empno%type := &no; 
+	v_ename emp.ename%type;
+	v_number number(3);
+	v_star varchar(10);
+
+begin
+	select ename, length(ename)
+	into v_ename, v_number
+	from emp 
+	where empno=test;
+
+	for i in 0..v_number loop
+		v_star := v_star || '*';
+	end loop;
+		dbms_output.put_line(v_star);
+end;
+/
