@@ -53,6 +53,7 @@ declare
 	no integer := 10; 					
 begin		
 	dbms_output.put_line('결과 : ' || no);	
+	dbms_output.put_line(concat('결과 : ',no/2));	
 	dbms_output.put_line('결과 : ' || no/5); 
 end;
 /
@@ -135,6 +136,22 @@ BEGIN
 end;
 /
 
+DECLARE
+	abc varchar(10) := '글로발';
+begin 
+	dbms_output.put_line(abc);
+	DECLARE
+		bcd varchar(10) := '로컬';
+	begin 
+	dbms_output.put_line(bcd);
+	dbms_output.put_line(abc);
+end;
+dbms_output.put_line(abc);
+end;
+/
+
+
+
 
 --5. emp01 table의 컬럼 타입을 그대로 사용하고 싶다면?
 	-- %type : db의 특정 컬럼의 타입 의미
@@ -156,17 +173,30 @@ BEGIN
 end;
 /
 
+declare 
+	v_empno emp01.empno%type;
+	v_ename emp01.ename%type;
+begin 
+select empno, ename into v_empno, v_ename
+from emp01 where empno=7369;
+dbms_output.put_line(concat(v_ename,v_empno));
+end;
+/
+
 
 --6. 이미 존재하는 table의 record의 모든 컬럼 타입 활용 키워드 : %rowtype
 /* 7369 사번으로 해당 사원의 모든 정보를 검색해서 사번, 이름만 착출해서 출력 */
+DECLARE
+
+
+
 
 DECLARE
 	v_rows emp01%rowtype;
 BEGIN
-	SELECT * 
-		into v_rows
+	SELECT * into v_rows
 	FROM emp where empno = 7369;
-	dbms_output.put_line(v_rows.sal || v_rows.ename);
+	dbms_output.put_line(v_rows.sal ||'  '|| v_rows.ename);
 
 end;
 /
@@ -177,6 +207,7 @@ end;
 -- %rowtype을 사용하셔서 emp의 사번이 7369인 사원 정보 검색해서 
 -- emp05 table에 insert
 -- 힌트 : begin 부분엔 다수의 sql문장 작성 가능, into 절
+
 drop table emp05;
 create table emp05 as select * from emp where 1=0;
 
@@ -353,21 +384,11 @@ end;
 -- 사원의 이름 음절 수 만큼 * 표 찍기 
 -- length()
 
-declare
-	num number(2) := 0;
-	test emp.empno%type := &v; 		
-begin
-	loop
-		dbms_output.put_line('*'*num);
-		num := num+1;
-		exit when length(test) = 5;
-	end loop;
-end;
-/
 
 
 
-declare
+
+declare -- 재사용성 고려 X
 	test emp.empno%type := &no; 
 	v_ename emp.ename%type;
 	v_number number(3);
@@ -379,7 +400,7 @@ begin
 	from emp 
 	where empno=test;
 
-	for i in 0..v_number loop
+	for i in 1..v_number loop
 		v_star := v_star || '*';
 	end loop;
 		dbms_output.put_line(v_star);

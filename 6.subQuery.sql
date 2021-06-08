@@ -18,11 +18,12 @@ where ename = 'SMITH' and emp.deptno = dept.deptno;
 
 -- sub query
 -- SMITH 사원 부서 번호 검색 후 해당 번호에 일치되는 부서테이블의 부서 번호와 일치되는 부서명 검색
-SELECT 	dname 
-from dept
-where deptno=(
-	SELECT deptno from emp where ename = 'SMITH'
-);
+
+
+
+select dname from dept
+where deptno=(select deptno from emp where ename='SMITH');
+
 
 
 --2. SMITH와 동일한 직급(job)을 가진 사원들의 모든 정보 검색(SMITH 포함)
@@ -93,3 +94,6 @@ where (deptno, sal) in (select deptno,max(sal) from emp group by deptno);
 select deptno, dname, loc 
 from dept 
 where deptno in (select deptno from emp where job = 'MANAGER');
+
+select ename,d.deptno, dname, loc from emp e,dept d 
+where ename in (select ename from emp where job = 'MANAGER') and e.deptno=d.deptno;

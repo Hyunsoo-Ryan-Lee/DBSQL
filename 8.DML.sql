@@ -448,18 +448,34 @@ insert all
 	into warehouse values('1007', 11)
 	into warehouse values('1008', 3)
 	into warehouse values('1009', 17)
-	into warehouse values('1010', 5)
-
 	into input values('1001',3)
 	into input values('1002',6)
 	into input values('1003',2)
 	into input values('1008',10)
-	
+	into input values('1010',2)
 	into sold values('1003',5)
 	into sold values('1007',4)
 	into sold values('1009',11)
-	into sold values('1010',2)
 select * from dual;
 
 --위의 세 테이블에서 sold가 들어가면 warehouse에서 수량을 빼고
 --input이 들어가면 warehouse에서 수량을 더해서 최종적으로 merge된 테이블 출력
+
+
+
+select * from warehouse;
+
+merge into warehouse w 
+using sold s
+on (w.product_no = s.product_no)
+when matched then 
+	update set w.amount = w.amount-s.amount;
+
+merge into warehouse w 
+using input i
+on (w.product_no = i.product_no)
+when matched then 
+	update set w.amount = w.amount+i.amount
+when not matched then 
+	insert values (i.product_no, i.amount);
+

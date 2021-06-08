@@ -47,7 +47,7 @@ select * from emp01;
 create table emp02 as select empno, sal from emp;
 
 
-
+drop table
 
 --5. deptno=10 조건문 반영해서 empno, ename, deptno로  emp03 table 생성
 create table emp03 as select empno, ename, deptno 
